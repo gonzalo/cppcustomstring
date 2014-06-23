@@ -36,7 +36,8 @@ MyString::MyString(MyString const &origin)
 
 MyString::~MyString()
 {
-    delete[] cadena; //comproobar delete[]
+    if (this->cadena!=nullptr)
+        delete[] cadena; //comproobar delete[]
 }
 
 int MyString::len()
@@ -44,6 +45,24 @@ int MyString::len()
     return str_len;
 }
 
+void MyString::append(char *append_string)
+{
+    int total, append_string_len, old_string_len;    
+    char *old_string;
+    
+    old_string = this->cadena;
+    old_string_len = this->str_len;
+    
+    append_string_len = (unsigned)strlen(append_string);
+    total = old_string_len + append_string_len;
+    this->cadena = new char[total+1];
+    
+    massive_copy(old_string, this->cadena, 0, old_string_len);
+    massive_copy(append_string, this->cadena, old_string_len, append_string_len);
+    
+    delete [] old_string;
+    
+}
 
 //operator = overload
 //copy de origin string into member string
@@ -58,15 +77,16 @@ MyString& MyString::operator=(const MyString & origin)
 }
 
 //operator = overload
-//points members to the new origin
-
+//point or assign?
+//currently it makes a copy
 MyString& MyString::operator=(const char * origin)
 {
     
     delete[] this->cadena;
     this->str_len= (unsigned)strlen(origin);
+    this->cadena = new char[this->str_len];
     
-    this->massive_copy(origin, this->cadena, 0, this->str_len+1);
+    this->massive_copy(origin, this->cadena, 0, this->str_len);
     return *this;
     
 }
@@ -98,7 +118,7 @@ MyString operator+ (MyString &string1, MyString &string2)
     nueva->cadena = new char[total_len+1];
     
     nueva->massive_copy(string1.cadena, nueva->cadena, 0, string1_len);
-    nueva->massive_copy(string2.cadena, nueva->cadena, string1_len, string2_len+1); //+1 para que copie el '\0' final
+    nueva->massive_copy(string2.cadena, nueva->cadena, string1_len, string2_len);
     
     return *nueva;
 }
@@ -126,7 +146,7 @@ int MyString::copy(const char * origin)
         return 1;
     }
     
-    massive_copy(origin, this->cadena, 0, this->str_len+1);
+    massive_copy(origin, this->cadena, 0, this->str_len);
     
     return 0;
 }
@@ -140,14 +160,42 @@ int MyString::copy(const char * origin)
 void MyString::massive_copy(const char * origin, char * destination, int init_point, int string_length)
 {
     //first method
-    for (int i=0; i<string_length; i++) {
-        destination[i+init_point]=origin[i];
+    //for (int i=0; i<string_length; i++) {
+    //    destination[i+init_point]=origin[i];
+    //}
+
+    //copy using memcpy
+    memcpy(destination+init_point, origin, string_length);
+    destination[init_point+string_length]='\0';
+    
+/*
+    //alternative method copying by blocks
+
+    wchar_t word;
+    int wchar_t_size;
+    int block_iterations;
+    int remainder_iterations;
+    int position = 0;
+    
+    wchar_t_size = sizeof(wchar_t);
+    
+    //we will copy char array using blocks of wchart_t_size in order to reduce
+    //read and write operations
+    
+    block_iterations = string_length / wchar_t_size;
+    remainder_iterations = string_length % wchar_t_size;
+
+    //copy blocks
+    for (int i = 0; i<block_iterations; i++)
+    {
+        position = init_point+i*wchar_t_size;
+        word = origin[position];
+        destination[position] = word;
     }
     
-    //alternative method copying by blocks
-    
-    
-    
-    
-    
+    //copy remainder
+    for (int i = init_point+wchar_t_size*block_iterations; i<remainder_iterations; i++) {
+        destination[i] = origin[i];
+    }
+*/
 }

@@ -25,7 +25,7 @@ public:
     ~MyString(); //destructor
     
     int len();
-    void append(char * string);
+    void append(char * append_string);
 
     MyString & operator = (const MyString &origin);
     MyString & operator = (const char * origin);

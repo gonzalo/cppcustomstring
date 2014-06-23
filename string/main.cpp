@@ -17,8 +17,9 @@ int main(int argc, const char * argv[])
     //cadena vacia
     MyString st_cadena_vacia;
     
-    std::cout << "Pruebas estáticas"<< std::endl;
+    std::cout << "Pruebas estaticas"<< std::endl;
     std::cout << "Cadena vacia << " << st_cadena_vacia << std::endl;
+    
     
     
     //cadena inicializada con char*
@@ -27,18 +28,20 @@ int main(int argc, const char * argv[])
     std::cout << "Cadena inic. con char* len: " << st_cadena_inicializada.len() << std::endl;
     std::cout << "Cadena inic. con char* << " << st_cadena_inicializada << std::endl;
     
+    
     //constructor de copia
     
     MyString st_cadena_copiada(st_cadena_inicializada);
     
     std::cout << "Cadena copiada << " << st_cadena_copiada<< std::endl;
     
-
+    
     //prueba operador suma
     MyString cadena_para_suma_1("Primera parte");
     MyString cadena_para_suma_2("Segunda parte");
     
     std::cout << "Cadena sumada = " << cadena_para_suma_1 + cadena_para_suma_2 << std::endl;
+    
     
     //pureba asignación desde string
     MyString cadena_para_asignar_origen("cadena para asignar");
@@ -57,7 +60,17 @@ int main(int argc, const char * argv[])
     
     std::cout << "Cadena para asignar origen : " << cadena_para_asignar_origen << std::endl;
     std::cout << "Cadena para asignar asignada : " << cadena_para_asignar_destino_vacia << std::endl;
-    //prueba
+
+    //probando appdend
+    
+    std::cout << "Probando append" << std::endl;
+    
+    MyString cadena_para_append("cadena inicial");
+    char anyadido[15]="+el anyadido";
+    cadena_para_append.append(anyadido);
+    
+    std::cout << "cadena con append = " << cadena_para_append << std::endl;
+    
     
     //pruebas dinámicas
     
@@ -92,6 +105,20 @@ int main(int argc, const char * argv[])
     
     cadena_vacia->~MyString();
     cadena_copiada->~MyString();
+    cadena_inicializada->~MyString();
+
+    /*
+    st_cadena_vacia.~MyString();
+    st_cadena_inicializada.~MyString();
+    st_cadena_copiada.~MyString();
+    cadena_para_suma_1.~MyString();
+    cadena_para_suma_2.~MyString();
+    cadena_para_asignar_origen.~MyString();
+    cadena_para_asignar_destino_vacia.~MyString();
+    cadena_para_asignar_destino_inicializada.~MyString();
+    cadena_para_append.~MyString();
+    */
+
     
     return 0;
 }
@@ -100,7 +127,7 @@ int main(int argc, const char * argv[])
 
 //¿el operador de asignación debería realizar una copia o directamente reapuntarse al
 //nuevo objeto? en caso de reapuntar ¿reapuntar al objeto o a los miembros de la clase?
-//¿qué pasa con la asignación del tipo a = b + c
+//¿qué pasa con la asignación del tipo a = b + c?
 
 //¿estoy haciendo la liberación de memoria de la forma correcta?
 
