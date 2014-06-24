@@ -27,7 +27,7 @@
 }
 
 
-- (void)testExample
+- (void)testMyString
 {
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
     

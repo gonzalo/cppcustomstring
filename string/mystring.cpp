@@ -11,10 +11,10 @@
 
 
 MyString::MyString()
-: str_len(0)
-, cadena(nullptr)
+: cadena(new char[1])
+,str_len(0)
 {
-    //constructur vacio
+    cadena[0] = '\0';
 }
 
 MyString::MyString(const char * origin)
@@ -22,7 +22,7 @@ MyString::MyString(const char * origin)
     
     //constructor con inicializador
     this->cadena = nullptr;
-    copy(origin);
+    this->copy(origin);
     
     
 }
@@ -31,18 +31,17 @@ MyString::MyString(MyString const &origin)
 {
     //constructor de copia
     this->cadena = nullptr;
-    copy(origin.cadena);
+    this->copy(origin.cadena);
 }
 
 MyString::~MyString()
 {
-    if (this->cadena!=nullptr)
-        delete[] cadena; //comproobar delete[]
+    delete[] cadena;
 }
 
 int MyString::len()
 {
-    return str_len;
+    return this->str_len;
 }
 
 void MyString::append(char *append_string)
@@ -81,12 +80,8 @@ MyString& MyString::operator=(const MyString & origin)
 //currently it makes a copy
 MyString& MyString::operator=(const char * origin)
 {
-    
-    delete[] this->cadena;
-    this->str_len= (unsigned)strlen(origin);
-    this->cadena = new char[this->str_len];
-    
-    this->massive_copy(origin, this->cadena, 0, this->str_len);
+
+    this->copy(origin);
     return *this;
     
 }
@@ -95,10 +90,8 @@ MyString& MyString::operator=(const char * origin)
 //just returns the char * with the contents of string
 std::ostream& operator<< (std::ostream &out, const MyString & string)
 {
-    if (string.cadena!=nullptr)
-        out << string.cadena;
-    else
-        out << "";
+    out << string.cadena;
+
     return out;
 }
 
@@ -135,18 +128,15 @@ char * MyString::out()
 
 int MyString::copy(const char * origin)
 {
-    if (cadena!=nullptr)
-        delete[] cadena;
+    char * old_string;
+    old_string = this->cadena;
     
     this->str_len = (unsigned)strlen(origin);
     this->cadena = new char[(this->str_len)+1]; //+1 para incluir el '\0'
-    if (cadena==nullptr)
-    {
-        printf("ERROR: Memory could not be allocated");
-        return 1;
-    }
     
     massive_copy(origin, this->cadena, 0, this->str_len);
+    
+    delete[] old_string;
     
     return 0;
 }

@@ -72,6 +72,23 @@ int main(int argc, const char * argv[])
     std::cout << "cadena con append = " << cadena_para_append << std::endl;
     
     
+    //autoasignaciones
+    std::cout << "Autoasignaciones" << std::endl;
+    MyString cadena_self_assignemement("Cadena para self-assignement");
+    
+    cadena_self_assignemement = cadena_self_assignemement;
+    
+    std::cout << "Cadena autoasignada =" << cadena_self_assignemement << std::endl;
+    
+    //asignaciones con cosas vacías
+    
+    MyString cadena_asignacion_con_vacio_1;
+    MyString cadena_asignacion_con_vacio_2;
+    
+    cadena_asignacion_con_vacio_1 = cadena_asignacion_con_vacio_2;
+    std::cout << "Cadena asignacion vacio =" << cadena_asignacion_con_vacio_1 << std::endl;
+    
+    
     //pruebas dinámicas
     
     //prueba inicializador vacío
